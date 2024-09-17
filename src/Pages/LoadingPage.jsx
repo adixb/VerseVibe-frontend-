@@ -4,6 +4,7 @@ import LoaderText from '../Assets/Group_7.png' ;
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
 import { IoMdMusicalNote } from "react-icons/io";
+import Background from "../Assets/background.png";
 
 
 function LoadingPage() {
@@ -33,7 +34,8 @@ function LoadingPage() {
   return (
     <>
    
-    <div className="Loader-container w-screen h-screen border border-black flex flex-col items-center justify-center">
+    <div className="Loader-container w-screen h-screen border border-black flex flex-col items-center justify-center"
+      style={{ backgroundImage: `url(${Background})` }}>
 
       <img src={LoaderLogo} alt='Loading-page-logo' className='w-28 h-28'></img>
      <span className='flex items-center'><img src={LoaderText} alt='Loading-page-logo' className='w-60 h-14 '></img>
