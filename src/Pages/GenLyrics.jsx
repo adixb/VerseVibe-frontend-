@@ -1,42 +1,39 @@
 import React, { useState } from 'react';
 import Navbar from '../Component/Navbar';
 import Background from "../Assets/background.png";
+import axios from 'axios' ; 
 
 function GenLyrics() {
   const [youtubeLink, setYoutubeLink] = useState('');  
   const [lyrics, setLyrics] = useState('');            
   const [loading, setLoading] = useState(false);       
 
+  
+const handleGenerateLyrics = async () => {
+  if (!youtubeLink) {
+    alert("Please Enter a valid YouTube link");
+    return;
+  }
 
-  const handleGenerateLyrics = async () => {
-    if (!youtubeLink) {
-      alert('Please paste a valid YouTube link.');
-      return;
-    }
+  setLoading(true);
 
-    setLoading(true);
+  try {
+    // Sending link to backend
+    const response = await axios.post('http://127.0.0.1:8000/api/lyrics/getLyrics', { link: youtubeLink });
 
-    try {
-      // Simulate an API call to fetch lyrics using the youtubeLink
-      const response = await fetch('/api/getLyrics', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ link: youtubeLink }),
-      });
-      
-      const data = await response.json();
-      
-      // Assuming the API response contains the lyrics in a field called 'lyrics'
-      setLyrics(data.lyrics);
-    } catch (error) {
-      console.error('Error fetching lyrics:', error);
-      alert('Failed to generate lyrics. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+
+
+    // Accessing the video title from response.data
+    const data = response.data;
+    setLyrics(data.videoTitle); // Change to videoTitle if that's what you expect to display
+  } catch (err) {
+    console.error('Error fetching lyrics:', err);
+    alert('Failed to generate lyrics, please try again!');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -65,7 +62,7 @@ function GenLyrics() {
           {loading ? (
             <p className="text-xl text-black">Generating lyrics, please wait...</p>
           ) : (
-            <p className="text-lg text-gray-700 whitespace-pre-wrap">
+            <p className="text-xl font-bold text-gray-700 whitespace-pre-wrap">
               {lyrics || 'Your generated lyrics will appear here.'}
             </p>
           )}
