@@ -9,30 +9,28 @@ function GenLyrics() {
   const [loading, setLoading] = useState(false);       
 
   
-const handleGenerateLyrics = async () => {
-  if (!youtubeLink) {
-    alert("Please Enter a valid YouTube link");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    // Sending link to backend
-    const response = await axios.post('http://127.0.0.1:8000/api/lyrics/getLyrics', { link: youtubeLink });
-
-
-
-    // Accessing the video title from response.data
-    const data = response.data;
-    setLyrics(data.videoTitle); // Change to videoTitle if that's what you expect to display
-  } catch (err) {
-    console.error('Error fetching lyrics:', err);
-    alert('Failed to generate lyrics, please try again!');
-  } finally {
-    setLoading(false);
-  }
-};
+  const handleGenerateLyrics = async () => {
+    if (!youtubeLink) {
+      alert("Please Enter a valid YouTube link");
+      return;
+    }
+  
+    setLoading(true);
+  
+    try {
+      // Sending link to backend
+      const response = await axios.post('http://127.0.0.1:8000/api/lyrics/getLyrics', { link: youtubeLink });
+  
+      // Accessing the lyrics from response.data
+      const data = response.data;
+      setLyrics(data.lyrics);
+    } catch (err) {
+      console.error('Error fetching lyrics:', err);
+      alert('Failed to generate lyrics, please try again!');
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -62,7 +60,7 @@ const handleGenerateLyrics = async () => {
           {loading ? (
             <p className="text-xl text-black">Generating lyrics, please wait...</p>
           ) : (
-            <p className="text-xl font-bold text-gray-700 whitespace-pre-wrap">
+            <p className="text-xl font-bold text-gray-700 whitespace-pre-wrap bg-white border border-black p-2 rounded-lg shadow-xl">
               {lyrics || 'Your generated lyrics will appear here.'}
             </p>
           )}
