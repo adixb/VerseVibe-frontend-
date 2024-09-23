@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 import Navbar from '../Component/Navbar';
 import Background from "../Assets/background.png";
-import axios from 'axios' ; 
+import axios from 'axios';
 
 function GenLyrics() {
-  const [youtubeLink, setYoutubeLink] = useState('');  
-  const [lyrics, setLyrics] = useState('');            
-  const [loading, setLoading] = useState(false);       
+  const [youtubeLink, setYoutubeLink] = useState('');
+  const [lyrics, setLyrics] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  
   const handleGenerateLyrics = async () => {
     if (!youtubeLink) {
       alert("Please Enter a valid YouTube link");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       // Sending link to backend
       const response = await axios.post('http://127.0.0.1:8000/api/lyrics/getLyrics', { link: youtubeLink });
-  
+
       // Accessing the lyrics from response.data
       const data = response.data;
       setLyrics(data.lyrics);
@@ -32,37 +31,43 @@ function GenLyrics() {
     }
   };
 
-
   return (
     <>
       <Navbar />
-      <div className="Generation-container  w-full h-screen flex flex-col items-center justify-center"
-       style={{ backgroundImage: `url(${Background})` }}>
-        <div className="text-center">
-          <p className='text-3xl font-bold my-12'>Paste your YouTube music link below</p>
-          <input
-            type='url'
-            placeholder='https://youtube.com/your-song-link'
-            className='p-3 border border-gray-400 rounded w-full max-w-lg'
-            value={youtubeLink}
-            onChange={(e) => setYoutubeLink(e.target.value)} // Capture input
-          />
-          <button
-            onClick={handleGenerateLyrics}
-            className='mt-4 p-3 bg-red-400 text-white rounded-lg hover:bg-red-600 transition-colors'
-          >
-            Generate Lyrics
-          </button>
+      <div 
+        className="w-full h-screen flex flex-col items-center justify-center bg-cover bg-center"
+        style={{ backgroundImage: `url(${Background})` }}
+      >
+        <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg text-center max-w-xl w-full mx-4 md:mx-auto">
+          <h1 className="text-3xl font-bold mb-4 text-gray-800">Generate Song Lyrics</h1>
+          <p className="text-lg text-gray-600 mb-6">Paste your YouTube music link below:</p>
+          <div className="flex flex-col md:flex-row gap-4 w-full">
+            <input
+              type="url"
+              placeholder="https://youtube.com/your-song-link"
+              className="p-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-red-400 transition-shadow"
+              value={youtubeLink}
+              onChange={(e) => setYoutubeLink(e.target.value)}
+            />
+            <button
+              onClick={handleGenerateLyrics}
+              className="px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto"
+            >
+              Generate Lyrics
+            </button>
+          </div>
         </div>
 
-        {/* Display lyrics or a loading state */}
-        <div className="lyrics-container mt-10 w-full max-w-2xl p-4 text-center">
+        {/* Display lyrics or loading state */}
+        <div className="mt-10 w-full max-w-3xl p-4 text-center">
           {loading ? (
-            <p className="text-xl text-black">Generating lyrics, please wait...</p>
+            <p className="text-2xl text-gray-800 font-semibold animate-pulse">Generating lyrics, please wait...</p>
           ) : (
-            <p className="text-xl font-bold text-gray-700 whitespace-pre-wrap bg-white border border-black p-2 rounded-lg shadow-xl">
-              {lyrics || 'Your generated lyrics will appear here.'}
-            </p>
+            <div className="bg-white bg-opacity-90 border border-gray-200 rounded-lg p-6 shadow-lg max-h-96 overflow-y-auto">
+              <p className="text-lg font-medium text-gray-800 whitespace-pre-wrap">
+                {lyrics || 'Your generated lyrics will appear here.'}
+              </p>
+            </div>
           )}
         </div>
       </div>
