@@ -63,7 +63,7 @@ function GenLyrics() {
           {loading ? (
             <p className="text-2xl text-gray-800 font-semibold animate-pulse">Generating lyrics, please wait...</p>
           ) : (
-            <div className="bg-white bg-opacity-90 border border-gray-200 rounded-lg p-6 shadow-lg max-h-96 overflow-y-auto">
+            <div className="bg-white bg-opacity-90 border border-gray-200 rounded-lg p-6 shadow-lg max-h-[30vw] overflow-y-auto">
               <p className="text-lg font-medium text-gray-800 whitespace-pre-wrap">
                 {lyrics || 'Your generated lyrics will appear here.'}
               </p>
