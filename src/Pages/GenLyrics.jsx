@@ -7,29 +7,32 @@ function GenLyrics() {
   const [youtubeLink, setYoutubeLink] = useState('');
   const [lyrics, setLyrics] = useState('');
   const [loading, setLoading] = useState(false);
-
+  
   const handleGenerateLyrics = async () => {
     if (!youtubeLink) {
-      alert("Please Enter a valid YouTube link");
-      return;
+        alert("Please enter a valid YouTube link");
+        return;
     }
 
     setLoading(true);
 
     try {
-      // Sending link to backend
-      const response = await axios.post('http://127.0.0.1:8000/api/lyrics/getLyrics', { link: youtubeLink });
+        // Sending link to backend
+        const response = await axios.post('http://localhost:8000/api/lyrics/getLyrics', { link: youtubeLink });
 
-      // Accessing the lyrics from response.data
-      const data = response.data;
-      setLyrics(data.lyrics);
+        // Check if response contains lyrics
+        if (response.data && response.data.lyrics) {
+            setLyrics(response.data.lyrics);
+        } else {
+            alert('Lyrics not found for this song!');
+        }
     } catch (err) {
-      console.error('Error fetching lyrics:', err);
-      alert('Failed to generate lyrics, please try again!');
+        console.error('Error fetching lyrics:', err.message);
+        alert('Failed to generate lyrics, please try again!');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <>
