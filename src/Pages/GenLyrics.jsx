@@ -18,7 +18,7 @@ function GenLyrics() {
 
     try {
         // Sending link to backend
-        const response = await axios.post('http://localhost:8000/api/lyrics/getLyrics', { link: youtubeLink });
+        const response = await axios.post('https://versevibe-backend-1.onrender.com/api/lyrics/getLyrics', { link: youtubeLink });
 
         // Check if response contains lyrics
         if (response.data && response.data.lyrics) {
